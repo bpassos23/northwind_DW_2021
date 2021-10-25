@@ -1,0 +1,19 @@
+version: 2
+
+sources:
+  - name: northwind_etl2
+    description: This is a replica of the Postgres database used by our app
+    tables:
+      - name: orders
+        description: >
+          One record per order. Includes cancelled and deleted orders.
+     
+
+      - name: products
+        description: Tabela de produtos
+      - name: shippers
+        description: Tabela de transportadores
+      - name: customers
+        description: Tabela de clientes
+      - name: suppliers
+        description: Tabela de produtos 
