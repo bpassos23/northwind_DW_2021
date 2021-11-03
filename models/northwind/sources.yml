@@ -17,3 +17,5 @@ sources:
         description: Tabela de clientes
       - name: suppliers
         description: Tabela de produtos 
+      - name: order_details
+        description: Tabela de detalhes dos pedidos

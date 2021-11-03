@@ -1,5 +1,5 @@
 with
-    source as (
+    source_data as (
         select 
          /* Primary Key*/ 
             supplier_id
@@ -27,4 +27,4 @@ with
     )
 
 
-    select * from source
+    select * from source_data

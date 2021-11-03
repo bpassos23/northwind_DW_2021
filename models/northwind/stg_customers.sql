@@ -1,8 +1,8 @@
 with
-    source as (
+    source_data as (
         select 
          /* Primary Key*/ 
-            , customer_id
+             customer_id
         		        
             , country  
             , address	            
@@ -20,10 +20,10 @@ with
             , _sdc_received_at            
             , _sdc_table_version	
             , _sdc_batched_at
-            , _sdc_extracted_at as last_etl_run
+            --, _sdc_extracted_at as last_etl_run
             from {{source('northwind_etl2', 'customers')}}
 
     )
 
 
-    select * from source
+    select * from source_data

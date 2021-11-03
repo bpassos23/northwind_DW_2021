@@ -1,8 +1,8 @@
 with
-    source_data as (
+    source_data2 as (
         select 
          /* Primary Key*/ 
-         ,   product_id	
+            product_id	
 
          /*Foreign Key*/
           ,   category_id
@@ -27,4 +27,4 @@ with
     )
 
 
-    select * from source
+    select * from source_data2

@@ -2,13 +2,13 @@ with
     selected as (
         select 
          /* Primary Key*/ 
-            , customer_id
+             customer_id
         		        
             , country  
             , city	
             , fax		
             , postal_code	
-            , address	
+            , address
             , region	
             , contact_name		
             , phone	
@@ -18,6 +18,11 @@ with
 
     )
 
-
+        ,Transformed as (
+            select
+                row_number() over (order by customer_id) as customer_sk
+                , *
+                from selected
+        )
     select * 
-    from selected          
+    from transformed 
