@@ -1,12 +1,9 @@
 with    
 customers as (
     select *
-    from {{ ref('dim_Customers')}}
+    from {{ ref('dim_customers')}}
 )
- , employees as (
-    select *
-    from {{ref ('dim_employees')}}
-)
+
  , shippers as (
     select * 
     from {{ref ('dim_shippers')}}
@@ -17,12 +14,11 @@ customers as (
     from {{ref ('dim_suppliers')}}
 )
 
-
 ,orders_with_sk as (
     select
          orders.order_id
-        ,employees.employee_id as employee_fk
         ,customers.customer_sk as customer_fk
+        ,orders.employee_id       
         ,orders.ship_address
         ,orders.required_date
         ,orders.order_date	
@@ -34,24 +30,42 @@ customers as (
         ,orders.ship_city
         ,orders.freight
         ,orders.ship_via
-    from {{ref('stg_orders')}} as orders 
-    left join employees on orders.employee_id = employees.employee_id   
+    from {{ref('stg_orders')}} as orders  
     left join customers  on orders.customer_id = customers.customer_id   
-  )    
+    ) 
+
+   , products_with_sk as (
+     select 
+            products.product_id	
+          ,  products.category_id
+          ,  suppliers.supplier_id	as supplier_sk
+
+          ,  products.units_in_stock		
+          ,  products.unit_price	
+          ,  products.units_on_order		          
+          ,  products.reorder_level		
+          ,  products.product_name	
+          ,  products.quantity_per_unit
+          ,  products.discontinued	     
+
+     from{{ref('dim_products')}} as products  
+     left join suppliers on products.supplier_id = suppliers.supplier_id 
+     )
+
     ,order_details_with_sk as (
         select
-            products.product_id as product_fk
+            products_with_sk.product_id as product_fk
             ,order_details.order_id             
             ,order_details.discount	
             ,order_details.unit_price	
             ,order_details.quantity
                 from {{ref('stg_order_details')}} as order_details
-            left join products on order_detail.product_id = products.products_id    
+            left join products_with_sk on order_details.product_id = products_with_sk.product_id    
     )
 , final as (
     select
         order_details_with_sk.order_id
-        ,orders_with_sk.employee_fk
+        ,order_details_with_sk.product_fk
         ,orders_with_sk.customer_fk
         ,orders_with_sk.ship_address
         ,orders_with_sk.required_date
